@@ -1,5 +1,11 @@
 package com.areeb.dynamicappicon.ui.IconChangerScreen
 
+import android.content.ComponentName
+import android.content.Context
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -35,6 +41,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
+import androidx.core.content.pm.ShortcutInfoCompat
+import androidx.core.content.pm.ShortcutManagerCompat
+import androidx.core.graphics.drawable.IconCompat
 import com.areeb.dynamicappicon.R
 import com.areeb.dynamicappicon.data.models.Icon
 import com.areeb.dynamicappicon.ui.IconChangerScreen.dialog.PremiumDialog
@@ -106,9 +116,7 @@ fun IconsView(icon: Icon) {
                     if (!icon.free) {
                         isDialogVisible = true
                     } else {
-                        Toast
-                            .makeText(context, "icon set", Toast.LENGTH_SHORT)
-                            .show()
+                        setAppIcon(context, icon.icon)
                     }
                 },
             contentAlignment = Alignment.Center
@@ -122,8 +130,6 @@ fun IconsView(icon: Icon) {
                     .height(200.dp)
                     .padding(10.dp),
             )
-
-
         }
     }
 
@@ -134,20 +140,40 @@ fun IconsView(icon: Icon) {
     }
 }
 
-fun openDialog() {
-    TODO("Not yet implemented")
+
+fun setAppIcon(context: Context, iconDrawableId: Int) {
+    Log.e("ksmksm", iconDrawableId.toString())
+    // Create a Bitmap from the drawable resource
+    val bitmap = BitmapFactory.decodeResource(context.resources, iconDrawableId)
+
+    // Create an Intent to launch when the shortcut is clicked
+    val launchIntent = context.packageManager.getLaunchIntentForPackage(context.packageName)
+
+    // Create a ShortcutInfoCompat object
+    val shortcutInfo = launchIntent?.let {
+        ShortcutInfoCompat.Builder(context, "dynamicShortcut")
+            .setIcon(IconCompat.createWithBitmap(bitmap))
+            .setShortLabel("App Icon")
+            .setIntent(it)
+            .build()
+    }
+
+    // Add the shortcut
+    if (shortcutInfo != null) {
+        ShortcutManagerCompat.requestPinShortcut(context, shortcutInfo, null)
+    }
 }
 
 fun iconList(): List<Icon> {
     val list = mutableListOf<Icon>()
-    list.add(Icon("ch1", 1, R.drawable.tiktok, true))
-    list.add(Icon("ch1", 2, R.drawable.facebook, false))
-    list.add(Icon("ch1", 3, R.drawable.logo, true))
-    list.add(Icon("ch1", 4, R.drawable.instagram, true))
-    list.add(Icon("ch1", 5, R.drawable.snapchat, true))
-    list.add(Icon("ch1", 6, R.drawable.mushroom, false))
-    list.add(Icon("ch1", 7, R.drawable.airbnb, true))
-    list.add(Icon("ch1", 8, R.drawable.airbnb2, false))
-    list.add(Icon("ch1", 9, R.drawable.house, false))
+    list.add(Icon("ch12", 1, R.drawable.tiktok, true))
+    list.add(Icon("ch1r", 2, R.drawable.facebook, false))
+    list.add(Icon("ch1ds", 3, R.drawable.logo, true))
+    list.add(Icon("ch1sa", 4, R.drawable.instagram, true))
+    list.add(Icon("ch1c", 5, R.drawable.snapchat, true))
+    list.add(Icon("ch1q", 6, R.drawable.mushroom, false))
+    list.add(Icon("ch1l", 7, R.drawable.airbnb, true))
+    list.add(Icon("csh1", 8, R.drawable.airbnb2, false))
+    list.add(Icon("cqh1", 9, R.drawable.house, false))
     return list
 }
