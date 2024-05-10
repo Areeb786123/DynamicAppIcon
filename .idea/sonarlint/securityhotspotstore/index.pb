@@ -64,3 +64,5 @@ F
 app/proguard-rules.pro,9/e/9e08934d811afe28fbc77aaa3c0d747b94348db9
 S
 #.idea/sonarlint/issuestore/index.pb,9/f/9fe84ebb15faf917b7def6236dba604453cc61e0
+‡
+Wapp/src/main/java/com/areeb/dynamicappicon/ui/IconChangerScreen/dialog/PremiumDialog.kt,d/f/df6599eaa26d2a0766fdcdc0833a4a2bd3610407
